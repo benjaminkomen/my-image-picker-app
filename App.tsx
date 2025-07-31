@@ -1,26 +1,27 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
-  Button,
-  StyleSheet,
-  View,
-  Platform,
   ActionSheetIOS,
   Alert,
+  Button,
   Dimensions,
+  FlatList,
+  Platform,
+  Pressable,
   SafeAreaView,
-  TouchableOpacity,
-  FlatList
+  StyleSheet,
+  View
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import { Image } from 'expo-image';
-import { Galeria } from '@nandorojo/galeria';
+import {Image} from 'expo-image';
+import {Galeria} from '@nandorojo/galeria';
+import {MaterialIcons} from '@expo/vector-icons';
 
 export default function App() {
   const [imageUris, setImageUris] = useState<string[]>([]);
 
   const takePhoto = async () => {
     // Request camera permission
-    const { status } = await ImagePicker.requestCameraPermissionsAsync();
+    const {status} = await ImagePicker.requestCameraPermissionsAsync();
     if (status !== 'granted') {
       alert('Sorry, we need camera permissions to take photos!');
       return;
@@ -38,7 +39,7 @@ export default function App() {
 
   const pickImageFromGallery = async () => {
     // Request permission to access media library
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    const {status} = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== 'granted') {
       alert('Sorry, we need media library permissions to make this work!');
       return;
@@ -87,10 +88,10 @@ export default function App() {
         'Photo Options',
         'What would you like to do?',
         [
-          { text: 'Cancel', style: 'cancel' },
-          { text: 'Delete', onPress: () => deletePhoto(index), style: 'destructive' }
+          {text: 'Cancel', style: 'cancel'},
+          {text: 'Delete', onPress: () => deletePhoto(index), style: 'destructive'}
         ],
-        { cancelable: true }
+        {cancelable: true}
       );
     }
   };
@@ -116,53 +117,57 @@ export default function App() {
         'Add Photo',
         'Choose an option',
         [
-          { text: 'Cancel', style: 'cancel' },
-          { text: 'Take Photo', onPress: takePhoto },
-          { text: 'Choose from Library', onPress: pickImageFromGallery },
+          {text: 'Cancel', style: 'cancel'},
+          {text: 'Take Photo', onPress: takePhoto},
+          {text: 'Choose from Library', onPress: pickImageFromGallery},
         ],
-        { cancelable: true }
+        {cancelable: true}
       );
     }
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <Button title="Add Photo" onPress={showImageOptions} />
-        {imageUris.length > 0 ? (
-          <View style={styles.galleryContainer}>
-            <Galeria urls={imageUris}>
-              <FlatList
-                data={imageUris}
-                renderItem={({ item, index }) => (
-                  <View style={styles.imageContainer}>
-                    <TouchableOpacity
-                      activeOpacity={0.9}
-                      onLongPress={() => handlePhotoPress(index)}
-                      delayLongPress={500}
-                    >
-                      <Galeria.Image index={index}>
-                        <Image
-                          source={{ uri: item }}
-                          style={styles.image}
-                          contentFit="cover"
-                        />
-                      </Galeria.Image>
-                    </TouchableOpacity>
-                  </View>
-                )}
-                keyExtractor={(uri) => uri}
-                numColumns={2}
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={styles.flatListContent}
-              />
-            </Galeria>
-          </View>
-        ) : null}
+      <View style={styles.buttonContainer}>
+        <Button title="Add Photo" onPress={showImageOptions}/>
+      </View>
+      {imageUris.length > 0 ? (
+        <View style={styles.galleryContainer}>
+          <Galeria urls={imageUris}>
+            <FlatList
+              data={imageUris}
+              renderItem={({item, index}) => (
+                <View key={item} style={styles.imageContainer}>
+                  <Galeria.Image index={index}>
+                    <>
+                      <Image
+                        source={{uri: item}}
+                        style={styles.image}
+                        contentFit="cover"
+                      />
+                      <Pressable
+                        style={styles.deleteButton}
+                        onPress={() => deletePhoto(index)}
+                      >
+                        <MaterialIcons name="delete" size={24} color="white"/>
+                      </Pressable>
+                    </>
+                  </Galeria.Image>
+                </View>
+              )}
+              keyExtractor={(uri) => uri}
+              numColumns={2}
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={styles.flatListContent}
+            />
+          </Galeria>
+        </View>
+      ) : null}
     </SafeAreaView>
   );
 }
 
-const { width } = Dimensions.get('window');
+const {width} = Dimensions.get('window');
 const imageWidth = (width - 50) / 2; // Accounting for container padding and gap
 
 const styles = StyleSheet.create({
@@ -194,5 +199,13 @@ const styles = StyleSheet.create({
   },
   flatListContent: {
     alignItems: 'center',
+  },
+  deleteButton: {
+    position: 'absolute',
+    top: 5,
+    left: 5,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    borderRadius: 20,
+    padding: 5,
   },
 });
