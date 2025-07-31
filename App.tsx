@@ -8,7 +8,7 @@ import {
   Alert,
   Dimensions,
   SafeAreaView,
-  ScrollView,
+  TouchableOpacity,
   FlatList
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
@@ -58,6 +58,43 @@ export default function App() {
     }
   };
 
+  const deletePhoto = (index: number) => {
+    setImageUris(prevUris => {
+      const newUris = [...prevUris];
+      newUris.splice(index, 1);
+      return newUris;
+    });
+  };
+
+  const handlePhotoPress = (index: number) => {
+    // Show delete options
+    if (Platform.OS === 'ios') {
+      ActionSheetIOS.showActionSheetWithOptions(
+        {
+          options: ['Cancel', 'Delete Photo'],
+          destructiveButtonIndex: 1,
+          cancelButtonIndex: 0,
+        },
+        (buttonIndex) => {
+          if (buttonIndex === 1) {
+            deletePhoto(index);
+          }
+        }
+      );
+    } else {
+      // For Android
+      Alert.alert(
+        'Photo Options',
+        'What would you like to do?',
+        [
+          { text: 'Cancel', style: 'cancel' },
+          { text: 'Delete', onPress: () => deletePhoto(index), style: 'destructive' }
+        ],
+        { cancelable: true }
+      );
+    }
+  };
+
   const showImageOptions = () => {
     if (Platform.OS === 'ios') {
       ActionSheetIOS.showActionSheetWithOptions(
@@ -96,9 +133,13 @@ export default function App() {
             <Galeria urls={imageUris}>
               <FlatList
                 data={imageUris}
-                renderItem={({ item, index }) => {
-                  return (
-                    <View key={item} style={styles.imageContainer}>
+                renderItem={({ item, index }) => (
+                  <View style={styles.imageContainer}>
+                    <TouchableOpacity
+                      activeOpacity={0.9}
+                      onLongPress={() => handlePhotoPress(index)}
+                      delayLongPress={500}
+                    >
                       <Galeria.Image index={index}>
                         <Image
                           source={{ uri: item }}
@@ -106,12 +147,14 @@ export default function App() {
                           contentFit="cover"
                         />
                       </Galeria.Image>
-                    </View>
-                  )
-                }}
+                    </TouchableOpacity>
+                  </View>
+                )}
+                keyExtractor={(uri) => uri}
                 numColumns={2}
-                keyExtractor={(item, index) => item + index.toString()}
-             />
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={styles.flatListContent}
+              />
             </Galeria>
           </View>
         ) : null}
@@ -126,6 +169,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 15,
+    paddingTop: 50,
+  },
+  buttonContainer: {
+    marginVertical: 10,
+    maxWidth: 250,
+    alignSelf: 'center',
   },
   galleryContainer: {
     flex: 1,
@@ -142,5 +191,8 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     borderRadius: 8,
+  },
+  flatListContent: {
+    alignItems: 'center',
   },
 });
