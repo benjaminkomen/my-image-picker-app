@@ -12,9 +12,18 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.bkomen.myimagepickerapp"
+      "bundleIdentifier": "com.bkomen.myimagepickerapp",
+      "appleTeamId": "24L96WG9A8",
+      "infoPlist": {
+        "NSPhotoLibraryUsageDescription": "Allow this app to access your photos to select images for display.",
+        "NSCameraUsageDescription": "Allow this app to access your camera to take photos.",
+        "NSMicrophoneUsageDescription": "Allow this app to use your microphone (optional for video recording)."
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -22,10 +31,18 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.bkomen.myimagepickerapp"
+      "package": "com.bkomen.myimagepickerapp",
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      "expo-image-picker"
+    ]
   }
 }
