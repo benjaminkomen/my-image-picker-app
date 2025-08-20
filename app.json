@@ -22,7 +22,8 @@
       "infoPlist": {
         "NSPhotoLibraryUsageDescription": "Allow this app to access your photos to select images for display.",
         "NSCameraUsageDescription": "Allow this app to access your camera to take photos.",
-        "NSMicrophoneUsageDescription": "Allow this app to use your microphone (optional for video recording)."
+        "NSMicrophoneUsageDescription": "Allow this app to use your microphone (optional for video recording).",
+        "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {
@@ -35,7 +36,8 @@
       "permissions": [
         "android.permission.CAMERA",
         "android.permission.READ_EXTERNAL_STORAGE",
-        "android.permission.WRITE_EXTERNAL_STORAGE"
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.RECORD_AUDIO"
       ]
     },
     "web": {
@@ -43,6 +45,11 @@
     },
     "plugins": [
       "expo-image-picker"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "0934bce0-22fb-4de3-82ea-338ece7670fc"
+      }
+    }
   }
 }

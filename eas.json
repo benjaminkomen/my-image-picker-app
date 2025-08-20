@@ -1,0 +1,25 @@
+{
+  "cli": {
+    "version": ">= 14.5.0",
+    "appVersionSource": "local"
+  },
+  "submit": {
+    "production": {}
+  },
+  "build": {
+    "preview": {
+      "distribution": "internal",
+      "environment": "preview"
+    },
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "environment": "development"
+    },
+    "production": {
+      "environment": "production",
+      "channel": "release",
+      "distribution": "store"
+    }
+  }
+}
