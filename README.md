@@ -12,8 +12,8 @@ selected images in a grid format.
 
 ## Installation
 
-Run `npm install --force` to install the required dependencies.
+Run `yarn` to install the required dependencies.
 
-For an android build on EAS, run `npm run build:preview:android` and for iOS run `npm run build:preview:ios`.
+For an android build on EAS, run `yarn build:preview:android` and for iOS run `yarn build:preview:ios`.
 
 Of course, you can also build locally.
