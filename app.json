@@ -31,7 +31,6 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true,
       "package": "com.bkomen.myimagepickerapp",
       "permissions": [
         "android.permission.CAMERA",
