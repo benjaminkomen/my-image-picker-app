@@ -10,3 +10,10 @@ selected images in a grid format.
 - Display selected images in a grid layout
 - Remove selected images using a button
 
+## Installation
+
+Run `npm install --force` to install the required dependencies.
+
+For an android build on EAS, run `npm run build:preview:android` and for iOS run `npm run build:preview:ios`.
+
+Of course, you can also build locally.
